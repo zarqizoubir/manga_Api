@@ -12,10 +12,10 @@ class MangaListCreateApiView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         route = serializer.validated_data.get("route")
         title = serializer.validated_data.get("title")
-
-        def renamePoster(title: str):
-            return title.lower().replace(" ", "_")+".png"
-        serializer.validated_data.get("poster").name = renamePoster(title)
+        if serializer.validated_data.get("poster"):
+            def renamePoster(title: str):
+                return title.lower().replace(" ", "_")+".png"
+            serializer.validated_data.get("poster").name = renamePoster(title)
         route = title.lower().replace(" ", "_")
         serializer.save(route=route)
 
@@ -29,9 +29,10 @@ class MangaUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
         route = serializer.validated_data.get("route")
         title = serializer.validated_data.get("title")
 
-        def renamePoster(title: str):
-            return title.lower().replace(" ", "_")+".png"
-        serializer.validated_data.get("poster").name = renamePoster(title)
+        if serializer.validated_data.get("poster"):
+            def renamePoster(title: str):
+                return title.lower().replace(" ", "_")+".png"
+            serializer.validated_data.get("poster").name = renamePoster(title)
         route = title.lower().replace(" ", "_")
         serializer.save(route=route)
 
