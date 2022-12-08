@@ -5,9 +5,9 @@ from django.db import models
 
 class Manga(models.Model):
     route = models.CharField(unique=True, max_length=500, blank=True)
-    poster = models.FileField(upload_to="posters/",
-                              max_length=255, null=True)
-    title = models.CharField(unique=True, max_length=200)
+    # poster = models.FileField(upload_to="posters/",max_length=255, null=True)
+    poster = models.ImageField(upload_to="posters/", max_length=255, null=True)
+    name = models.CharField(unique=True, max_length=200)
     description = models.TextField(blank=True, null=True)
     rating = models.DecimalField(
         blank=True, null=True, decimal_places=2, max_digits=10)

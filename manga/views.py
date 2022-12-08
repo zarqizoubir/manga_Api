@@ -10,6 +10,7 @@ class MangaListCreateApiView(generics.ListCreateAPIView):
     serializer_class = serializers.MangaSerializer
 
     def perform_create(self, serializer):
+        print(self.request.data)
         route = serializer.validated_data.get("route")
         title = serializer.validated_data.get("title")
         if serializer.validated_data.get("poster"):
