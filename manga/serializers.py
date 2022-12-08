@@ -21,7 +21,7 @@ class MangaSerializer(serializers.ModelSerializer):
         model = models.Manga
         read_only_fields = ["chapters"]
         exclude = [
-            "route",
+            "id_name",
             "updated_at",
             "uploaded_at"
         ]
