@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.db.models import Q
 from django.contrib.auth.models import User
 
 from rest_framework import status
@@ -17,8 +18,18 @@ class MangaCreateListApiView(APIView):
     def get_objects(self):
         return self.model.objects.all()
 
+    def get_objects_query(self, params):
+        return self.model.objects.filter(
+            Q(id_name__icontains=params) |
+            Q(name__icontains=params) |
+            Q(description__icontains=params)
+        ).all()
+
     def get(self, request: HttpRequest):
-        serializer = self.serializer(self.get_objects(), many=True)
+        params = request.query_params["search"] if request.GET.get(
+            "search") != None else ""
+
+        serializer = self.serializer(self.get_objects_query(params), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request: HttpRequest):
