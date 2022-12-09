@@ -19,9 +19,8 @@ class MangaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Manga
-        read_only_fields = ["chapters"]
+        read_only_fields = ["chapters", "id_name"]
         exclude = [
-            "id_name",
             "updated_at",
             "uploaded_at"
         ]

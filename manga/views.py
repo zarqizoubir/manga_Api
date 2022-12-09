@@ -1,56 +1,72 @@
-from rest_framework import generics
+from django.http import Http404
+
+from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.request import HttpRequest
 from rest_framework.response import Response
+
 from .models import Manga
 from . import serializers
 
 
-# class MangaListCreateApiView(generics.ListCreateAPIView):
-#     queryset = Manga.objects.all()
-#     serializer_class = serializers.MangaSerializer
+class MangaCreateListApiView(APIView):
+    model = Manga.objects.all()
+    serializer = serializers.MangaSerializer
 
-#     def perform_create(self, serializer):
-#         print(self.request.data)
-#         route = serializer.validated_data.get("route")
-#         name = serializer.validated_data.get("name")
-#         if serializer.validated_data.get("poster"):
-#             def renamePoster(title: str):
-#                 return title.lower().replace(" ", "_")+".png"
-#             serializer.validated_data.get("poster").name = renamePoster(name)
-#         route = name.lower().replace(" ", "_")
-#         serializer.save(route=route)
+    def get(self, request: HttpRequest):
+        serializer = self.serializer(self.model, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-# class MangaUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Manga.objects.all()
-#     serializer_class = serializers.MangaSerializer
-#     lookup_field = "route"
-
-#     def perform_update(self, serializer):
-#         route = serializer.validated_data.get("route")
-#         name = serializer.validated_data.get("name")
-
-#         if serializer.validated_data.get("poster"):
-#             def renamePoster(title: str):
-#                 return title.lower().replace(" ", "_")+".png"
-#             serializer.validated_data.get("poster").name = renamePoster(name)
-#         route = name.lower().replace(" ", "_")
-#         serializer.save(route=route)
+    def post(self, request: HttpRequest):
+        HOST = request.META["HTTP_HOST"]
+        data = request.data
+        serializer = self.serializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            name: str = serializer.validated_data.get("name")
+            id_name = serializer.validated_data.get("id_name")
+            unique_id = name.lower().replace(" ", "_")
+            if serializer.validated_data.get("poster"):
+                serializer.validated_data.get(
+                    "poster").name = unique_id+".png"
+                print(serializer.validated_data.get("poster"))
+            id_name = unique_id
+            serializer.save(id_name=id_name)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-# class ChapterListCreate(generics.ListCreateAPIView):
-#     queryset = Manga.objects
-#     serializer_class = serializers.ChapterSerialzer
-#     lookup_field = "route"
+class MangaRetrieveUpdateDestroy(APIView):
+    model = Manga
+    serializer = serializers.MangaSerializer
+    lookup_key = "id_name"
 
-#     def list(self, request: HttpRequest, *args, **kwargs):
-#         lookup_key = kwargs[self.lookup_field]
-#         chapters = self.queryset.filter(
-#             route=lookup_key).first().chapters.all()
-#         serializer = serializers.ChapterSerialzer(instance=chapters, many=True)
-#         return Response(serializer.data)
+    def get_object(self, manga: str):
+        try:
+            return self.model.objects.get(id_name=manga)
+        except Manga.DoesNotExist:
+            raise Http404
 
-#     def perform_create(self, serializer: serializers.ChapterSerialzer):
-#         lookup_key = self.kwargs[self.lookup_field]
-#         manga = self.queryset.filter(route=lookup_key).first()
-#         serializer.save(manga=manga)
+    def get(self, request: HttpRequest, manga: str):
+        query_set = self.get_object(manga)
+        serializer = self.serializer(query_set)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request: HttpRequest, manga: str):
+        query_set = self.get_object(manga)
+        serializer = self.serializer(query_set, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            name: str = serializer.validated_data.get("name")
+            id_name = serializer.validated_data.get("id_name")
+            unique_id = name.lower().replace(" ", "_")
+            if serializer.validated_data.get("poster"):
+                serializer.validated_data.get(
+                    "poster").name = unique_id+".png"
+                print(serializer.validated_data.get("poster"))
+            id_name = unique_id
+            serializer.save(id_name=id_name)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request: HttpRequest, manga: str):
+        queryset = self.get_object(manga)
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
