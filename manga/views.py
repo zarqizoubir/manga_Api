@@ -11,37 +11,37 @@ from . import serializers
 
 #     def perform_create(self, serializer):
 #         print(self.request.data)
-#         route = serializer.validated_data.get("route")
+#         id_manga = serializer.validated_data.get("id_manga")
 #         name = serializer.validated_data.get("name")
 #         if serializer.validated_data.get("poster"):
 #             def renamePoster(title: str):
 #                 return title.lower().replace(" ", "_")+".png"
 #             serializer.validated_data.get("poster").name = renamePoster(name)
-#         route = name.lower().replace(" ", "_")
-#         serializer.save(route=route)
+#         id_manga = name.lower().replace(" ", "_")
+#         serializer.save(id_manga=id_manga)
 
 
 # class MangaUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = Manga.objects.all()
 #     serializer_class = serializers.MangaSerializer
-#     lookup_field = "route"
+#     lookup_field = "id_manga"
 
 #     def perform_update(self, serializer):
-#         route = serializer.validated_data.get("route")
+#         id_manga = serializer.validated_data.get("id_manga")
 #         name = serializer.validated_data.get("name")
 
 #         if serializer.validated_data.get("poster"):
 #             def renamePoster(title: str):
 #                 return title.lower().replace(" ", "_")+".png"
 #             serializer.validated_data.get("poster").name = renamePoster(name)
-#         route = name.lower().replace(" ", "_")
-#         serializer.save(route=route)
+#         id_manga = name.lower().replace(" ", "_")
+#         serializer.save(id_manga=id_manga)
 
 
 # class ChapterListCreate(generics.ListCreateAPIView):
 #     queryset = Manga.objects
 #     serializer_class = serializers.ChapterSerialzer
-#     lookup_field = "route"
+#     lookup_field = "id_manga"
 
 #     def list(self, request: HttpRequest, *args, **kwargs):
 #         lookup_key = kwargs[self.lookup_field]

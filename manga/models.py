@@ -4,7 +4,9 @@ from django.db import models
 
 
 class Manga(models.Model):
-    id_name = models.CharField(primary_key=True, null=False, unique=True)
+    id_name = models.CharField(null=False, unique=True, max_length=200)
+    poster = models.FileField(
+        upload_to="posters/%Y/%m/%d", max_length=400, null=True)
     name = models.CharField(max_length=300,)
     description = models.TextField(blank=True, null=True)
     rating = models.DecimalField(
