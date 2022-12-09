@@ -9,6 +9,7 @@ class ChapterSerialzer(serializers.ModelSerializer):
         model = models.Chapter
         exclude = [
             "id",
+            "number",
             "manga",
             "created_at"
         ]
