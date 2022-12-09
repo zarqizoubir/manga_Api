@@ -86,8 +86,10 @@ class MangaRetrieveUpdateDestroy(APIView):
                 print(serializer.validated_data.get("poster"))
             id_name = unique_id
 
+            endpoint = f"{HOST}manga/{unique_id}"
+
             serializer.save(id_name=id_name,
-                            endpoint=f"{HOST}manga/{unique_id}")
+                            endpoint=endpoint)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
