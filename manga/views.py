@@ -42,7 +42,6 @@ class MangaCreateListApiView(APIView):
         data = request.data
         serializer = self.serializer(data=data)
         if serializer.is_valid(raise_exception=True):
-            # endpoint = serializer.validated_data.get("endpoint")
             name: str = serializer.validated_data.get("name")
             id_name = serializer.validated_data.get("id_name")
             unique_id = name.lower().replace(" ", "_")
@@ -50,7 +49,7 @@ class MangaCreateListApiView(APIView):
             if serializer.validated_data.get("poster"):
                 serializer.validated_data.get(
                     "poster").name = unique_id+".png"
-                print(serializer.validated_data.get("poster"))
+
             id_name = unique_id
             serializer.save(id_name=id_name, endpoint=url_endpoint)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -76,15 +75,21 @@ class MangaRetrieveUpdateDestroy(APIView):
         query_set = self.get_object(manga)
         serializer = self.serializer(query_set, data=request.data)
         if serializer.is_valid(raise_exception=True):
+            HOST = request.build_absolute_uri("/")
             name: str = serializer.validated_data.get("name")
             id_name = serializer.validated_data.get("id_name")
             unique_id = name.lower().replace(" ", "_")
+
             if serializer.validated_data.get("poster"):
                 serializer.validated_data.get(
                     "poster").name = unique_id+".png"
                 print(serializer.validated_data.get("poster"))
             id_name = unique_id
-            serializer.save(id_name=id_name)
+
+            endpoint = f"{HOST}manga/{unique_id}"
+
+            serializer.save(id_name=id_name,
+                            endpoint=endpoint)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
