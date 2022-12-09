@@ -1,18 +1,16 @@
 import requests
 
-files = {
-    "poster": open("1.jpg", "rb")
+end = "http://127.0.0.1:8000/token/"
+
+
+data = {
+    "username": "someone",
+    "password": "",
 }
 
-values = {
-    "name": "ssfsq",
-    "description": "Somrhringi",
-    "rating": 3
-}
-response = requests.post(
-    "http://127.0.0.1:8000/manga/",
-    json=values,
-    files=files
+res = requests.post(
+    end,
+    data=data
 )
 
-print(response.text)
+print(res.json())

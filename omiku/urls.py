@@ -18,9 +18,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+from rest_framework.authtoken.views import obtain_auth_token
+
+from . import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("manga/", include("manga.urls"))
+    path("manga/", include("manga.urls")),
+    path("register/", views.RegisterUser.as_view()),
+    path("token/", obtain_auth_token),
+
 ]
 
 
