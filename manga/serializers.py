@@ -34,6 +34,19 @@ class MangaSerializer(serializers.ModelSerializer):
         model = models.Manga
         read_only_fields = ["chapters", "id_name"]
         exclude = [
+            "endpoint",
+            "updated_at",
+            "uploaded_at"
+
+        ]
+
+
+class MangaSearchSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Manga
+
+        exclude = [
             "updated_at",
             "uploaded_at"
         ]
