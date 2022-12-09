@@ -18,7 +18,7 @@ class MangaCreateListApiView(APIView):
     def get_objects(self):
         return self.model.objects.all()
 
-    def get_objects_query(self, params):
+    def get_search_query(self, params):
         return self.model.objects.filter(
             Q(id_name__icontains=params) |
             Q(name__icontains=params) |
@@ -26,26 +26,33 @@ class MangaCreateListApiView(APIView):
         ).all()
 
     def get(self, request: HttpRequest):
+        # print(request.build_absolute_uri())
         params = request.query_params["search"] if request.GET.get(
             "search") != None else ""
 
-        serializer = self.serializer(self.get_objects_query(params), many=True)
+        if params:
+            serializer = serializers.MangaSearchSerializer(
+                self.get_search_query(params), many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        serializer = self.serializer(self.get_objects(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request: HttpRequest):
-        HOST = request.META["HTTP_HOST"]
         data = request.data
         serializer = self.serializer(data=data)
         if serializer.is_valid(raise_exception=True):
+            # endpoint = serializer.validated_data.get("endpoint")
             name: str = serializer.validated_data.get("name")
             id_name = serializer.validated_data.get("id_name")
             unique_id = name.lower().replace(" ", "_")
+            url_endpoint = f"{request.build_absolute_uri()}{unique_id}/"
             if serializer.validated_data.get("poster"):
                 serializer.validated_data.get(
                     "poster").name = unique_id+".png"
                 print(serializer.validated_data.get("poster"))
             id_name = unique_id
-            serializer.save(id_name=id_name)
+            serializer.save(id_name=id_name, endpoint=url_endpoint)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
