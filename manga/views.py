@@ -120,6 +120,17 @@ class ChapterRetreiveUpdateDestroy(APIView):
         serializer = self.serializer(query_set)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def post(self, request: HttpRequest, manga: str, number: str):
+        query_set = self.get_object(manga, number)
+        serializer = serializers.ChapterPartSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            title: str = serializer.validated_data.get("title")
+            serializer.validated_data.get(
+                "image").name = title.lower().replace(" ", "_")+".png"
+            serializer.save(chapter=query_set)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def put(self, request: HttpRequest, manga: str, number: str):
         query_set = self.get_object(manga, number)
         serializer = self.serializer(query_set, data=request.data)
