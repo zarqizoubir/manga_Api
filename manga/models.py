@@ -24,6 +24,8 @@ class Manga(models.Model):
 
 
 class Chapter(models.Model):
+    number = models.DecimalField(
+        default=1, max_length=1000, decimal_places=2, max_digits=20)
     title = models.CharField(max_length=200, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True)
     manga = models.ForeignKey(Manga, to_field="id_name", related_name="chapters",
