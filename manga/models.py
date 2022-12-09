@@ -4,13 +4,13 @@ from django.db import models
 
 
 class Manga(models.Model):
-    id_name = models.CharField(null=False, unique=True, max_length=200)
+    id_name = models.CharField(unique=True, max_length=200)
     poster = models.FileField(
         upload_to="posters/%Y/%m/%d", max_length=400, null=True)
-    name = models.CharField(max_length=300,)
-    description = models.TextField(blank=True, null=True)
-    rating = models.DecimalField(
-        blank=True, null=True, decimal_places=2, max_digits=10)
+    name = models.CharField(max_length=300, unique=True)
+    description = models.TextField(blank=True, default="")
+    rating = models.DecimalField(default=0,
+                                 blank=True, decimal_places=2, max_digits=10)
     author = models.CharField(max_length=200, blank=True)
     painter = models.CharField(max_length=200, blank=True)
     type = models.CharField(max_length=200, blank=True)
@@ -20,7 +20,7 @@ class Manga(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self
+        return self.name
 
 
 class Chapter(models.Model):
