@@ -20,14 +20,20 @@ from django.conf.urls.static import static
 
 
 from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.documentation import include_docs_urls
+from rest_framework_swagger.views import get_swagger_view
 
 from . import views
+
+schema_view = get_swagger_view(title='Polls API')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("manga/", include("manga.urls")),
     path("register/", views.RegisterUser.as_view()),
     path("token/", obtain_auth_token),
+    path(r'docs/', include_docs_urls(title='Polls API')),
+    # path(r'docs-swagger/', schema_view),
 
 ]
 

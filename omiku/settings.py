@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "rest_framework",
+    'rest_framework_swagger',
     "rest_framework.authtoken",
     "manga",
 ]
@@ -141,3 +142,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'storage')
 #         "rest_framework.permissions.IsAuthenticatedOrReadOnly"
 #     ]
 # }
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
