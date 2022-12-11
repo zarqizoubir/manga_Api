@@ -25,6 +25,13 @@ class MangaGenericListCreateApiView(generics.ListCreateAPIView):
             Q(description__icontains=params)
         ).all()
 
+    def get_serializer_class(self):
+        params = self.request.query_params["search"] if self.request.GET.get(
+            "search") != None else ""
+        if params:
+            return serializers.MangaSearchSerializer
+        return super().get_serializer_class()
+
     # Default Processing using GET
 
     # def get(self, request, *args, **kwargs):
@@ -61,7 +68,28 @@ class MangaGenericListCreateApiView(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+class MangaGenericsRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Manga.objects.all()
+    serializer_class = serializers.MangaSerializer
+    lookup_field = "id_name"
+
+    def perform_update(self, serializer):
+        if serializer.is_valid(raise_exception=True):
+            print(serializer.validated_data.get('poster'))
+            name: str = serializer.validated_data.get("name")
+            id_name = serializer.validated_data.get("id_name")
+            unique_id = name.lower().replace(" ", "_")
+            url_endpoint = f"{self.request.build_absolute_uri()}{unique_id}/"
+            if serializer.validated_data.get("poster"):
+                serializer.validated_data.get(
+                    "poster").name = unique_id+".png"
+
+            id_name = unique_id
+            serializer.save(id_name=id_name, endpoint=url_endpoint)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 # Standard Api View
+
 
 class MangaCreateListApiView(APIView):
     model = models.Manga
