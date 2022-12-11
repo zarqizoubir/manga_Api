@@ -25,6 +25,8 @@ class MangaGenericListCreateApiView(generics.ListCreateAPIView):
             Q(description__icontains=params)
         ).all()
 
+    # Default Processing using GET
+
     # def get(self, request, *args, **kwargs):
     #     params = request.query_params["search"] if request.GET.get(
     #         "search") != None else ""
@@ -43,6 +45,20 @@ class MangaGenericListCreateApiView(generics.ListCreateAPIView):
             serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return super().list(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        if serializer.is_valid(raise_exception=True):
+            name: str = serializer.validated_data.get("name")
+            id_name = serializer.validated_data.get("id_name")
+            unique_id = name.lower().replace(" ", "_")
+            url_endpoint = f"{self.request.build_absolute_uri()}{unique_id}/"
+            if serializer.validated_data.get("poster"):
+                serializer.validated_data.get(
+                    "poster").name = unique_id+".png"
+
+            id_name = unique_id
+            serializer.save(id_name=id_name, endpoint=url_endpoint)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 # Standard Api View
