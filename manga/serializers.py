@@ -21,7 +21,7 @@ class ChapterSerialzer(serializers.ModelSerializer):
         read_only_fields = ["chapter_parts"]
         exclude = [
             "id",
-            "number",
+            # "number",
             "manga",
             "created_at"
         ]
