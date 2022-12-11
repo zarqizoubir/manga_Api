@@ -25,7 +25,7 @@ class Manga(models.Model):
 
 
 class Chapter(models.Model):
-    id = models.IntegerField(primary_key=True)
+    name = models.CharField(blank=True, unique=True, max_length=2000)
     title = models.CharField(max_length=200, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True)
     manga = models.ForeignKey(Manga, to_field="id_name", related_name="chapters",
@@ -40,7 +40,7 @@ class ChapterPart(models.Model):
     title = models.CharField(max_length=300, blank=True)
     image = models.ImageField(
         upload_to="chapters/%Y/%m/%d", max_length=1000, null=True)
-    chapter = models.ForeignKey(Chapter, to_field="id", related_name="chapter_parts",
+    chapter = models.ForeignKey(Chapter, to_field="name", related_name="chapter_parts",
                                 null=True, on_delete=models.CASCADE, blank=True)
 
     def __str__(self) -> str:
