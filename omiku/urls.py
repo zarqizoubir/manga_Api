@@ -30,6 +30,7 @@ schema_view = get_swagger_view(title='Polls API')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("manga/", include("manga.urls")),
+    path("test/manga/", include("manga.test_urls")),
     path("register/", views.RegisterUser.as_view()),
     path("token/", obtain_auth_token),
     path(r'docs/', include_docs_urls(title='Polls API')),

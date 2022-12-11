@@ -8,6 +8,7 @@ class ChapterPartSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ChapterPart
         exclude = [
+            "chapter",
             "id"
         ]
 
@@ -20,8 +21,8 @@ class ChapterSerialzer(serializers.ModelSerializer):
         model = models.Chapter
         read_only_fields = ["chapter_parts"]
         exclude = [
+            "name",
             "id",
-            "number",
             "manga",
             "created_at"
         ]
