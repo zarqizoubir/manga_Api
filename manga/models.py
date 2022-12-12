@@ -9,10 +9,13 @@ class Manga(models.Model):
         upload_to="posters/%Y/%m/%d", max_length=400, null=True)
     name = models.CharField(max_length=300, unique=True)
     endpoint = models.URLField(unique=True, blank=True, max_length=2000)
+    chapters_endpoint = models.URLField(
+        unique=True, blank=True, max_length=2000)
     description = models.TextField(blank=True, default="")
     rating = models.DecimalField(default=0,
                                  blank=True, decimal_places=2, max_digits=10)
     author = models.CharField(max_length=200, blank=True)
+
     painter = models.CharField(max_length=200, blank=True)
     type = models.CharField(max_length=200, blank=True)
     release_year = models.CharField(blank=True, max_length=100)
