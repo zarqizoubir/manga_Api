@@ -13,19 +13,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from . import views
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.documentation import include_docs_urls
-from rest_framework_swagger.views import get_swagger_view
 
-from . import views
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view as swagger_get_schema_view
 
-schema_view = get_swagger_view(title='Polls API')
+schema_view = swagger_get_schema_view(
+    openapi.Info(
+        title="Manga API",
+        default_version="0.0.1",
+        description="API documentation for app",
+    ),
+    public=True
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,8 +41,9 @@ urlpatterns = [
     path("chapters/", include("chapters.urls")),
     path("register/", views.RegisterUser.as_view()),
     path("token/", obtain_auth_token),
-    path(r'docs/', include_docs_urls(title='Polls API')),
-    # path(r'docs-swagger/', schema_view),
+    # path(r'docs/', include_docs_urls(title='Polls API', public=True)),
+    path("docs/", schema_view.with_ui("swagger",
+         cache_timeout=0), name="swagger-schema")
 
 ]
 

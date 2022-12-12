@@ -2,3 +2,4 @@ django==4.0.8
 rest_framework
 requests
 rest_framework_swagger
+drf_yasg
