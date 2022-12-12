@@ -31,18 +31,6 @@ class MangaGenericListCreateApiView(generics.ListCreateAPIView):
             return serializers.MangaSearchSerializer
         return super().get_serializer_class()
 
-    # Default Processing using GET
-
-    # def get(self, request, *args, **kwargs):
-    #     params = request.query_params["search"] if request.GET.get(
-    #         "search") != None else ""
-    #     if params:
-    #         serializer = serializers.MangaSearchSerializer(
-    #             self.get_search_query(params), many=True)
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     serializer = self.serializer(self.get_objects(), many=True)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-
     def list(self, request, *args, **kwargs):
         params = request.query_params["search"] if request.GET.get(
             "search") != None else ""
@@ -58,12 +46,14 @@ class MangaGenericListCreateApiView(generics.ListCreateAPIView):
             id_name = serializer.validated_data.get("id_name")
             unique_id = name.lower().replace(" ", "_")
             url_endpoint = f"{self.request.build_absolute_uri()}{unique_id}/"
+            chapters_end = f"{self.request.build_absolute_uri('/')}chapters/{unique_id}"
             if serializer.validated_data.get("poster"):
                 serializer.validated_data.get(
                     "poster").name = unique_id+".png"
 
             id_name = unique_id
-            serializer.save(id_name=id_name, endpoint=url_endpoint)
+            serializer.save(id_name=id_name,
+                            endpoint=url_endpoint, chapters_endpoint=chapters_end)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
