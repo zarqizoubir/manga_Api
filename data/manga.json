@@ -1,0 +1,38 @@
+{
+    "manga": [
+        {
+            "name": "One Piece",
+            "description": "One Piece follows the adventurous and funny story of Monkey D. Luffy. As a boy, Luffy has always wanted to be the Pirate King. His body obtained the properties of rubber after eating a Devil Fruit. Together with a diverse crew of wannabe pirates, Luffy sets out on the ocean in an attempt to find the world’s ultimate treasure, One Piece. When talking about the most successful manga and anime series of all time, One Piece will always enter the conversation. Just the mere fact of it running for almost decades goes to show how loved it is by millions of fans worldwide. What’s interesting is that there are still plenty of folks who are eager to get started on their One Piece adventure. It doesn’t matter if they have to read countless manga chapters or watch hundreds of anime episodes. The undeniable lure of One Piece continues to fascinate fans around the world. The series boasts of some jaw-dropping numbers. The manga consists of over 800 chapters while the anime series has more than 700 episodes. And there are no signs of slowing down. One Piece has even made it to the Guinness Book of World Records. The manga has 320 million copies in print worldwide as of June 2015.",
+            "rating": 4.59,
+            "author": "Oda Eiichiro",
+            "painter": "Oda Eiichiro",
+            "type": "Manga",
+            "status": "ongoing",
+            "release_year": 1999
+        }
+    ],
+    "chapters": [
+        {
+            "title": "One Piece Chapter 1",
+            "Chapter parts": [
+                {
+                    "title": "1",
+                    "image": "data/chapters/one_piece_1/1.png"
+                },
+                {
+                    "title": "2",
+                    "image": "data/chapters/one_piece_1/2.png"
+                },
+                {
+                    "title": "3",
+                    "image": "data/chapters/one_piece_1/3.png"
+                }
+            ]
+        }
+    ],
+    "posters": [
+        {
+            "one_piece": "data/posters/one_piece.jpg"
+        }
+    ]
+}
