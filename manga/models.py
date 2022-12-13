@@ -30,7 +30,6 @@ class Manga(models.Model):
 class Chapter(models.Model):
     name = models.CharField(blank=True, unique=True, max_length=2000)
     title = models.CharField(max_length=200, blank=True, null=True)
-    description = models.CharField(max_length=500, blank=True)
     manga = models.ForeignKey(Manga, to_field="id_name", related_name="chapters",
                               null=True, on_delete=models.CASCADE, blank=True)
     created_at = models.DateTimeField(auto_now=True,)
