@@ -42,8 +42,8 @@ urlpatterns = [
     path("register/", views.RegisterUser.as_view()),
     path("token/", obtain_auth_token),
     # path(r'docs/', include_docs_urls(title='Polls API', public=True)),
-    path("docs/", schema_view.with_ui("swagger",
-         cache_timeout=0), name="swagger-schema")
+    path("docs/", schema_view.with_ui("redoc",
+         cache_timeout=0), name="redoc-schema")
 
 ]
 
