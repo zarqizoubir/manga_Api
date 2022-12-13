@@ -62,9 +62,9 @@ class MangaGenericsRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.MangaSerializer
     lookup_field = "id_name"
 
-    def perform_update(self, serializer):
+    def perform_update(self, serializer: serializers.MangaSerializer):
         if serializer.is_valid(raise_exception=True):
-            print(serializer.validated_data.get('poster'))
+
             name: str = serializer.validated_data.get("name")
             id_name = serializer.validated_data.get("id_name")
             unique_id = name.lower().replace(" ", "_")

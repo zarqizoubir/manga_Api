@@ -87,6 +87,7 @@ class ChapterGenericsRetreiveUpdateDestroy(
         name = f"{id_name}_{number}"
         query_set = self.get_object(id_name, name)
         serializer = self.get_serializer(query_set, data=request.data)
+        poster = serializer.validated_data
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

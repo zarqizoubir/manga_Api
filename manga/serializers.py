@@ -9,13 +9,21 @@ class MangaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Manga
-        read_only_fields = ["chapters", "id_name"]
+        read_only_fields = ["chapters", "id_name", "chapters_endpoint", ]
         exclude = [
             "endpoint",
             "updated_at",
             "uploaded_at"
 
         ]
+
+    def update(self, instance, validated_data):
+
+        if validated_data["poster"] == None:
+            validated_data["poster"] = instance.poster
+            print(validated_data)
+
+        return super().update(instance, validated_data)
 
 
 class MangaSearchSerializer(serializers.ModelSerializer):
