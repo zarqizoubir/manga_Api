@@ -3,6 +3,8 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 
 from rest_framework import status
+from rest_framework import authentication
+from rest_framework import permissions
 from rest_framework import generics, mixins
 from rest_framework.request import HttpRequest
 from rest_framework.response import Response
@@ -10,12 +12,20 @@ from rest_framework.response import Response
 from . import models
 from . import serializers
 
+from .authentication import TokenAuthentication
+from .permissions import IsAdminOrReadOnly
 
 # Start Migrating from APIView To genericsView
+
 
 class MangaGenericListCreateApiView(generics.ListCreateAPIView):
     queryset = models.Manga.objects.all()
     serializer_class = serializers.MangaSerializer
+
+    authentication_classes = [TokenAuthentication,
+                              authentication.SessionAuthentication]
+
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_search_query(self, params):
         return self.get_queryset().filter(
@@ -61,6 +71,10 @@ class MangaGenericsRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Manga
     serializer_class = serializers.MangaSerializer
     lookup_field = "id_name"
+    authentication_classes = [TokenAuthentication,
+                              authentication.SessionAuthentication]
+
+    permission_classes = [IsAdminOrReadOnly]
 
     def perform_update(self, serializer: serializers.MangaSerializer):
         if serializer.is_valid(raise_exception=True):

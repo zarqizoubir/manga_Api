@@ -39,6 +39,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("manga/", include("manga.urls")),
     path("chapters/", include("chapters.urls")),
+    path('api-auth/', include('rest_framework.urls')),
     path("register/", views.RegisterUser.as_view()),
     path("token/", obtain_auth_token),
     # path(r'docs/', include_docs_urls(title='Polls API', public=True)),
