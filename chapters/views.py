@@ -1,18 +1,26 @@
 from django.http import Http404
 
 from rest_framework import status
+from rest_framework import authentication
 from rest_framework import generics, mixins
 from rest_framework.request import HttpRequest
 from rest_framework.response import Response
 
 
 from . import serializers
+
 from manga import models
+from manga.authentication import TokenAuthentication
+from manga.permissions import IsAdminOrReadOnly
 
 
 class ChapterGenericListCreateApiView(generics.ListCreateAPIView):
     queryset = models.Manga
     serializer_class = serializers.ChapterSerialzer
+    authentication_classes = [TokenAuthentication,
+                              authentication.SessionAuthentication]
+
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_objects(self, id_name: str):
         try:
@@ -46,6 +54,10 @@ class ChapterGenericsRetreiveUpdateDestroy(
 ):
     queryset = models.Manga
     serializer_class = serializers.ChapterSerialzer
+    authentication_classes = [TokenAuthentication,
+                              authentication.SessionAuthentication]
+
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_class(self):
         method = self.request.method

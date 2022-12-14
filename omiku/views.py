@@ -10,9 +10,6 @@ from rest_framework.response import Response
 class RegisterUser(APIView):
     model = User
 
-    def get_object(self):
-        pass
-
     def get(self, request: HttpRequest):
         return Response({"message": "Send The Cridentials Using a POST method"})
 
@@ -31,6 +28,7 @@ class RegisterUser(APIView):
             user = User.objects.create_user(
                 username=username, email=email, password=password)
             user.save()
+            # return Response({"message": "Navigate to token/ route to get your token"}, status=status.HTTP_200_OK)
         except:
             return Response({"message": "Enter the Data with a valid format"}, status=status.HTTP_400_BAD_REQUEST)
 
