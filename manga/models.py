@@ -46,4 +46,4 @@ class ChapterPart(models.Model):
                                 null=True, on_delete=models.CASCADE, blank=True)
 
     def __str__(self) -> str:
-        return self.filename
+        return self.title
