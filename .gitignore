@@ -3,3 +3,5 @@ __pycache__/
 storage/
 db.sqlite3
 SDK/
+env/
+index.py
