@@ -1,6 +1,9 @@
-django==4.0.8
-rest_framework
+django>=4.0.O,<4.1.0
+djangorestframework
+django-rest-swagger
+pyyaml
 requests
-rest_framework_swagger
+django-cors-headers
 drf_yasg
-admin_interface
+django-admin-interface
+psycopg2-binary
