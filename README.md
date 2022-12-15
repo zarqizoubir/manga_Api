@@ -61,6 +61,11 @@ python or python3 manage.py runserver [PORT]
 python or python3 manage.py runserver 9000
 ```
 
+# Admin New panel :
+django-admin-interface :
+https://github.com/fabiocaccamo/django-admin-interface
+
+
 ## after that go the the docs/ to read the documentation endpoint 
 
 
