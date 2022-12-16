@@ -1,11 +1,4 @@
-from django.http import Http404
-from django.db.models import Q
-from django.contrib.auth.models import User
-
-from rest_framework import status
-from rest_framework import authentication
-from rest_framework import permissions
-from rest_framework import generics, mixins
+from rest_framework import status, authentication, generics, filters
 from rest_framework.request import HttpRequest
 from rest_framework.response import Response
 
@@ -21,33 +14,19 @@ from .permissions import IsAdminOrReadOnly
 class MangaGenericListCreateApiView(generics.ListCreateAPIView):
     queryset = models.Manga.objects.all()
     serializer_class = serializers.MangaSerializer
-
     authentication_classes = [TokenAuthentication,
                               authentication.SessionAuthentication]
-
     permission_classes = [IsAdminOrReadOnly]
-
-    def get_search_query(self, params):
-        return self.get_queryset().filter(
-            Q(id_name__icontains=params) |
-            Q(name__icontains=params) |
-            Q(description__icontains=params)
-        ).all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'author', "release_year", "status"]
 
     def get_serializer_class(self):
-        params = self.request.query_params["search"] if self.request.GET.get(
-            "search") != None else ""
-        if params:
+        params = self.request.query_params
+        if len(params) != 0:
             return serializers.MangaSearchSerializer
         return super().get_serializer_class()
 
     def list(self, request, *args, **kwargs):
-        params = self.request.query_params["search"] if self.request.GET.get(
-            "search") != None else ""
-        if params:
-            queryset = self.get_search_query(params)
-            serializer = self.get_serializer(queryset, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
         return super().list(request, *args, **kwargs)
 
     def perform_create(self, serializer):
