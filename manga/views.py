@@ -1,6 +1,7 @@
 from rest_framework import status, authentication, generics, filters
-from rest_framework.request import HttpRequest
+
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle
 
 from . import models
 from . import serializers
